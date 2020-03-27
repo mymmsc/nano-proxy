@@ -19,8 +19,6 @@ public class ProxyInitializer extends ChannelInitializer<SocketChannel> {
 		this.trafficShapingHandler = trafficShapingHandler;
 	}
 
-
-
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
 		ch.pipeline().addLast(trafficShapingHandler,

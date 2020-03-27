@@ -28,12 +28,12 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
 	public void channelActive(ChannelHandlerContext ctx) {
 		final Channel inboundChannel = ctx.channel();
 		// Start the connection attempt.
-		Bootstrap b = new Bootstrap();
-		b.group(inboundChannel.eventLoop())
+		Bootstrap bootstrap = new Bootstrap();
+		bootstrap.group(inboundChannel.eventLoop())
 				.channel(ctx.channel().getClass())
 				.handler(new ProxyBackendHandler(inboundChannel, proxyDefinition))
 				.option(ChannelOption.AUTO_READ, false);
-		ChannelFuture f = b.connect(proxyDefinition.getRemoteHost(), proxyDefinition.getRemotePort());
+		ChannelFuture f = bootstrap.connect(proxyDefinition.getRemoteHost(), proxyDefinition.getRemotePort());
 		outboundChannel = f.channel();
 		f.addListener(new ChannelFutureListener() {
 			@Override
@@ -48,6 +48,7 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
 			}
 		});
 	}
+
 	@Override
 	public void channelRead(final ChannelHandlerContext ctx, Object msg) {
 		if (outboundChannel.isActive()) {

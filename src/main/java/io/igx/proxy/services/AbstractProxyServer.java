@@ -54,9 +54,11 @@ public abstract class AbstractProxyServer implements ProxyServer {
 		}
 	}
 
+	@Override
 	public ConnectionStats getStats(){
-		if(!running)
+		if(!running) {
 			return new ConnectionStats(0,0);
+		}
 
 		return new ConnectionStats(trafficHandler.trafficCounter().lastWrittenBytes(),trafficHandler.trafficCounter().lastReadBytes());
 	}

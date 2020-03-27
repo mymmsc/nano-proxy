@@ -21,10 +21,11 @@ public class GlobalConnectionCounterHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		if(maxConnections > -1){
-			if(counter.get() < maxConnections)
+			if(counter.get() < maxConnections) {
 				counter.incrementAndGet();
-			else
+			} else {
 				ctx.close();
+			}
 		}
 
 	}

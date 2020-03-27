@@ -81,8 +81,9 @@ public class NettyServerServiceImpl implements NettyServerService {
 
 	private ProxyServer findServer(String id){
 		ProxyServer server = servers.get(id);
-		if(server == null)
+		if(server == null) {
 			throw new ServerNotFoundException("Server not found: " + id);
+		}
 		return server;
 	}
 
