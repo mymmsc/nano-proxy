@@ -23,32 +23,7 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
 	public ProxyFrontendHandler(ProxyDefinition proxyDefinition) {
 		this.proxyDefinition = proxyDefinition;
 	}
-/*
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) {
-		final Channel inboundChannel = ctx.channel();
-		// Start the connection attempt.
-		Bootstrap bootstrap = new Bootstrap();
-		bootstrap.group(inboundChannel.eventLoop())
-				.channel(ctx.channel().getClass())
-				.handler(new ProxyBackendHandler(inboundChannel, proxyDefinition))
-				.option(ChannelOption.AUTO_READ, false);
-		ChannelFuture f = bootstrap.connect(proxyDefinition.getRemoteHost(), proxyDefinition.getRemotePort());
-		outboundChannel = f.channel();
-		f.addListener(new ChannelFutureListener() {
-			@Override
-			public void operationComplete(ChannelFuture future) {
-				if (future.isSuccess()) {
-					// connection complete start to read first data
-					inboundChannel.read();
-				} else {
-					// Close the connection if the connection attempt has failed.
-					inboundChannel.close();
-				}
-			}
-		});
-	}
-*/
+
 	private void connectBackend(ChannelHandlerContext ctx, Object msg) {
 		final Channel inboundChannel = ctx.channel();
 		// Start the connection attempt.
@@ -94,6 +69,11 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
 				}
 			});
 		}
+	}
+
+	@Override
+	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+		super.channelReadComplete(ctx);
 	}
 
 	@Override
